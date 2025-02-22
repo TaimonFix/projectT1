@@ -1,9 +1,9 @@
-package ru.online.t1_academy.bratyshevTD.service;
+package ru.online.t1_academy.projectT1.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.online.t1_academy.bratyshevTD.dto.Task;
-import ru.online.t1_academy.bratyshevTD.repository.TaskRepository;
+import ru.online.t1_academy.projectT1.dto.Task;
+import ru.online.t1_academy.projectT1.repository.TaskRepository;
 
 import java.util.List;
 

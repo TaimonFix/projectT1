@@ -1,11 +1,11 @@
-package ru.online.t1_academy.bratyshevTD.controller;
+package ru.online.t1_academy.projectT1.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.online.t1_academy.bratyshevTD.dto.Task;
-import ru.online.t1_academy.bratyshevTD.service.TaskService;
+import ru.online.t1_academy.projectT1.dto.Task;
+import ru.online.t1_academy.projectT1.service.TaskService;
 
 import java.util.List;
 
@@ -20,6 +20,8 @@ public class TaskController {
      */
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
+        System.out.println(task.getTitle());
+        System.out.println(task.getDescription());
         service.createTask(task);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }

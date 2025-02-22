@@ -1,4 +1,4 @@
-package ru.online.t1_academy.bratyshevTD.dto;
+package ru.online.t1_academy.projectT1.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
