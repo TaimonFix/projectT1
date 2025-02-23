@@ -2,6 +2,7 @@ package ru.online.t1_academy.projectT1.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.online.t1_academy.projectT1.aspect.annotation.CustomLogging;
 import ru.online.t1_academy.projectT1.dto.Task;
 import ru.online.t1_academy.projectT1.repository.TaskRepository;
 
@@ -12,15 +13,17 @@ public class TaskService {
     @Autowired
     private TaskRepository repository;
 
-
+    @CustomLogging
     public void createTask(Task task) {
         repository.save(task);
     }
 
+    @CustomLogging
     public Task findTaskById(Long id) {
         return repository.getReferenceById(id);
     }
 
+    @CustomLogging
     public Task updateTask(Task task, Long id) {
         Task updatedTask = repository.getReferenceById(id);
         updatedTask.setTitle(task.getTitle());
@@ -29,11 +32,12 @@ public class TaskService {
         return repository.save(updatedTask);
     }
 
+    @CustomLogging
     public void deleteTaskById(Long id) {
         repository.deleteById(id);
     }
 
-
+    @CustomLogging
     public List<Task> getTasks() {
         return repository.findAll();
     }
