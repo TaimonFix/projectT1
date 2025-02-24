@@ -1,12 +1,12 @@
 package ru.online.t1_academy.projectT1.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.online.t1_academy.projectT1.aspect.annotation.CustomLogging;
-import ru.online.t1_academy.projectT1.aspect.annotation.ExampleAnnotation;
+import ru.online.t1_academy.projectT1.aspect.annotation.ExceptionAnnotation;
+import ru.online.t1_academy.projectT1.aspect.annotation.TrackingAnnotation;
 import ru.online.t1_academy.projectT1.dto.Task;
-import ru.online.t1_academy.projectT1.example.NullTaskException;
+import ru.online.t1_academy.projectT1.exception.NullTaskException;
 import ru.online.t1_academy.projectT1.repository.TaskRepository;
 
 import java.util.List;
@@ -17,33 +17,43 @@ public class TaskService {
     private TaskRepository repository;
 
     @CustomLogging
+    @TrackingAnnotation
     public void createTask(Task task) {
         repository.save(task);
     }
 
     @CustomLogging
+    @ExceptionAnnotation
+    @TrackingAnnotation
     public Task findTaskById(Long id) {
-        return repository.getReferenceById(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new NullTaskException("Task doesn't exists"));
     }
 
     @CustomLogging
-    @ExampleAnnotation
+    @ExceptionAnnotation
+    @TrackingAnnotation
     public Task updateTask(Task task, Long id) {
-
-        throw new NullTaskException("Task doesn't exists");
-//        Task updatedTask = repository.getReferenceById(id);
-//        updatedTask.setTitle(task.getTitle());
-//        updatedTask.setDescription(task.getDescription());
-//        updatedTask.setUserId(task.getUserId());
-//        return repository.save(updatedTask);
+        Task updatedTask = repository.findById(id)
+                .orElseThrow(() -> new NullTaskException("Task doesn't exists"));
+        updatedTask.setTitle(task.getTitle());
+        updatedTask.setDescription(task.getDescription());
+        updatedTask.setUserId(task.getUserId());
+        return repository.save(updatedTask);
     }
 
     @CustomLogging
+    @ExceptionAnnotation
+    @TrackingAnnotation
     public void deleteTaskById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new NullTaskException("Task doesn't exists");
+        }
         repository.deleteById(id);
     }
 
     @CustomLogging
+    @TrackingAnnotation
     public List<Task> getTasks() {
         return repository.findAll();
     }

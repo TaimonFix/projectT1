@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.online.t1_academy.projectT1.dto.Task;
+import ru.online.t1_academy.projectT1.exception.NullTaskException;
 import ru.online.t1_academy.projectT1.service.TaskService;
 
 import java.util.List;
@@ -20,8 +21,6 @@ public class TaskController {
      */
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
-        System.out.println(task.getTitle());
-        System.out.println(task.getDescription());
         service.createTask(task);
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
@@ -31,27 +30,38 @@ public class TaskController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTask(@PathVariable Long id) {
-        Task task = service.findTaskById(id);
-        return task != null ? ResponseEntity.ok(task) : ResponseEntity.notFound().build();
+        try {
+            Task task = service.findTaskById(id);
+            return ResponseEntity.ok(task);
+        } catch (NullTaskException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
      * Обновление задачи
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@RequestBody Task task, @PathVariable Long id) {
-        Task updatedTask = service.updateTask(task, id);
-        return updatedTask != null ? ResponseEntity.ok(updatedTask) : ResponseEntity.notFound().build();
+    public ResponseEntity<Task> updateTask(@RequestBody Task task, @PathVariable("id") Long id) {
+        try {
+            Task updatedTask = service.updateTask(task, id);
+            return ResponseEntity.ok(updatedTask);
+        } catch (NullTaskException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
      * Удаление задачи
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        service.deleteTaskById(id);
-        return ResponseEntity.noContent().build();
-
+    public ResponseEntity<Void> deleteTask(@PathVariable("id") Long id) {
+        try {
+            service.deleteTaskById(id);
+            return ResponseEntity.noContent().build();
+        } catch (NullTaskException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
@@ -60,6 +70,7 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<List<Task>> getTasks() {
         List<Task> tasks = service.getTasks();
+
         return ResponseEntity.ok(tasks);
     }
 }
