@@ -1,5 +1,6 @@
 package ru.online.t1_academy.projectT1.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.online.t1_academy.projectT1.aspect.annotation.CustomLogging;
@@ -12,14 +13,15 @@ import ru.online.t1_academy.projectT1.repository.TaskRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TaskService {
-    @Autowired
-    private TaskRepository repository;
+
+    private final TaskRepository repository;
 
     @CustomLogging
     @TrackingAnnotation
-    public void createTask(Task task) {
-        repository.save(task);
+    public Task createTask(Task task) {
+        return repository.save(task);
     }
 
     @CustomLogging

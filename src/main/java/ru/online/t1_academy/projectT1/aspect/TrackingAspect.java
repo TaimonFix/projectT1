@@ -14,17 +14,17 @@ public class TrackingAspect {
 
     @Around("@annotation(ru.online.t1_academy.projectT1.aspect.annotation.TrackingAnnotation)")
     public Object trackingAdvice(ProceedingJoinPoint joinPoint) {
-        long start = System.currentTimeMillis();
-        Object proceeded;
         try {
-            proceeded = joinPoint.proceed();
+            long start = System.currentTimeMillis();
+            Object proceeded = joinPoint.proceed();
+            long finish = System.currentTimeMillis();
+
+            log.info("Time execution method {} cost time: {}", joinPoint.getSignature().getName(), (finish - start));
+
+            return proceeded;
         } catch (Throwable e) {
             throw new NullTaskException(e.getMessage());
         }
-        long finish = System.currentTimeMillis();
 
-        log.info("Time execution method {} cost time: {}", joinPoint.getSignature().getName(), (finish - start));
-
-        return proceeded;
     }
 }
