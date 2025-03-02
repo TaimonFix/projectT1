@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: projectT1
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/project_t1?currentSchema=public
+    username: postgres
+    password: local
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update

@@ -1,0 +1,22 @@
+version: "3.10"
+services:
+  db:
+    image: postgres:16
+    container_name: project_t1_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=local
+      - POSTGRES_DB=project_t1
+  app:
+    build: .
+    container_name: project_t1
+    ports:
+      - "5434:5434"
+    environment:
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_NAME=fill_project_t1
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=local
